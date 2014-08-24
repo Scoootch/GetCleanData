@@ -1,0 +1,106 @@
+---
+output:
+  html_document:
+    keep_md: yes
+---
+title: "CodeBook.Rmd"
+output:
+  html_document:
+    keep_md: yes
+
+# Getting and Cleaning Data Course Project: Code Book #
+
+The script for the project can be found in run_analysis.R Also the code with detailed comments you can find in README.md. Here the algorithm of data cleaning is described (it is also described in README.md). Also the structure of output files reported.
+
+The script download the zip file, unzip it, load pack of data files in R variables. After that the script clean data (remove excess data), merge data sets and name columns. Than it names the activities? computes average values and writes data to the set of files.
+
+## Detailed descrition ##
+
+### Data loading ###
+
+There were 6 data files for analysis. X_test.txt and X_train.txt contain measured values for testing and training sets. Y_test.txt and Y_train.txt contain values of activity variables (it's just numbers). Files subject_test.txt and subject_train.txt contains information about subjects of research. Subjects are people but coded by numbers from 1 to 30. Also there are two auxiliary files: activity_labels.txt and features.txt. The first one contains activity decoding data, and the second contains names of the variables.
+
+### Data cleaning ###
+
+Only the measurements on the mean and standard deviation for each measurement were selected. During cleaning I've assumed that meanFreq() and stdFreq() don't contain measurements on the mean and standard deviation. So we need only valiables with mean() and std(). The grepl function was used. After that all the data was merged.
+
+Also activity codes have been converted into descriptive activity names. I've used names from the activity_labels.txt: WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING.
+
+### Mean values calculation and file writing
+Also the average of each variable for each activity and each subject was calculated. For each variable we have got matrix 30x6 with mean values. They were put in the list variable full of matricies. This variable was written in the main file Tidy_data_mean later. Also all the matricies were saved in the separate .txt files in the new directory "Means_of_variables". The main data.frame was also written in the file Tidy_data.
+
+### Output files ###
+The script produces 4 file and 1 folder with files.
+
+Files with measurements
+There are two files with measurements in different formats:
+Tidy_data.txt
+Tidy_data.csv
+Description of all initial variables can be found in the bottom of this document. 
+
+Files with mean values
+There are two files with mean values in different formats:
+Tidy_data_mean.txt
+Tidy_data_mean.csv
+Txt file containes all names from the list variable and numeric values. Csv containes table 30x396 with mean values. Values for different subjects are in the rows. Values for different variables and activities are in the columns. Description of all initial variables can be found in the bottom of this document.
+
+The folder "Means_of_variables" containes 66 files with 30x6 matricies. Each file and matrix are for one variable. In matricies: rows are for subjects, columns for activities.
+
+### Initial variables description (from features_info.txt) ###
+The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz. 
+
+Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
+
+Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
+
+These signals were used to estimate variables of the feature vector for each pattern:  
+'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
+
+tBodyAcc-XYZ
+tGravityAcc-XYZ
+tBodyAccJerk-XYZ
+tBodyGyro-XYZ
+tBodyGyroJerk-XYZ
+tBodyAccMag
+tGravityAccMag
+tBodyAccJerkMag
+tBodyGyroMag
+tBodyGyroJerkMag
+fBodyAcc-XYZ
+fBodyAccJerk-XYZ
+fBodyGyro-XYZ
+fBodyAccMag
+fBodyAccJerkMag
+fBodyGyroMag
+fBodyGyroJerkMag
+
+The set of variables that were estimated from these signals are: 
+
+mean(): Mean value
+std(): Standard deviation
+mad(): Median absolute deviation 
+max(): Largest value in array
+min(): Smallest value in array
+sma(): Signal magnitude area
+energy(): Energy measure. Sum of the squares divided by the number of values. 
+iqr(): Interquartile range 
+entropy(): Signal entropy
+arCoeff(): Autorregresion coefficients with Burg order equal to 4
+correlation(): correlation coefficient between two signals
+maxInds(): index of the frequency component with largest magnitude
+meanFreq(): Weighted average of the frequency components to obtain a mean frequency
+skewness(): skewness of the frequency domain signal 
+kurtosis(): kurtosis of the frequency domain signal 
+bandsEnergy(): Energy of a frequency interval within the 64 bins of the FFT of each window.
+angle(): Angle between to vectors.
+
+Additional vectors obtained by averaging the signals in a signal window sample. These are used on the angle() variable:
+
+gravityMean
+tBodyAccMean
+tBodyAccJerkMean
+tBodyGyroMean
+tBodyGyroJerkMean
+
+The complete list of variables of each feature vector is available in 'features.txt'
+
